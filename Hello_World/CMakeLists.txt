@@ -28,25 +28,35 @@ set(PICO_BOARD pico CACHE STRING "Board type")
 # Pull in Raspberry Pi Pico SDK (must be before project)
 include(pico_sdk_import.cmake)
 
-project(blink C CXX ASM)
+project(Hello_World C CXX ASM)
 
 # Initialise the Raspberry Pi Pico SDK
 pico_sdk_init()
 
 # Add executable. Default name is the project name, version 0.1
 
-add_executable(blink
-    blink.c
-    )
+add_executable(Hello_World Hello_World.c )
 
-# pull in common dependencies
-target_link_libraries(blink pico_stdlib)
+pico_set_program_name(Hello_World "Hello_World")
+pico_set_program_version(Hello_World "0.1")
 
-if (PICO_CYW43_SUPPORTED)
-    target_link_libraries(blink pico_cyw43_arch_none)
-endif()
+# Modify the below lines to enable/disable output over UART/USB
+pico_enable_stdio_uart(Hello_World 1)
+pico_enable_stdio_usb(Hello_World 0)
 
-# create map/bin/hex file etc.
-pico_add_extra_outputs(blink)
+# Add the standard library to the build
+target_link_libraries(Hello_World
+        pico_stdlib)
 
-# add url via pico_set_program_url
+# Add the standard include files to the build
+target_include_directories(Hello_World PRIVATE
+        ${CMAKE_CURRENT_LIST_DIR}
+)
+
+# Add any user requested libraries
+target_link_libraries(Hello_World 
+        hardware_i2c
+        )
+
+pico_add_extra_outputs(Hello_World)
+
