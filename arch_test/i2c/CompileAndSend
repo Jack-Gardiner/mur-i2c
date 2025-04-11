@@ -1,0 +1,8 @@
+#!/bin/bash
+echo "Compiling.."
+cd ..
+cd build
+cmake ..
+cd i2c
+make -j4
+cp i2c_bus_scan.uf2 /run/media/jagardiner/RPI-RP2/
